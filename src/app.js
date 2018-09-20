@@ -8,6 +8,8 @@ import './styles/style.scss';
 
 import AppRouter from './routers/AppRouter';
 import ExpenseStore from './stores/expensifyStore';
+
+import './firebase/firebase';
 // import configureStore from './stores/configureStore';
 // import { addExpense, editExpense, removeExpense } from './actions/expenses';
 // import {setEndDate, setStartDate, setTextFilter,sortByAmount, sortByDate} from './actions/filters';
