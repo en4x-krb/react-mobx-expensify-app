@@ -1,0 +1,14 @@
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font: Helvetica, Arial, sans-serif;
+    font-size: 2rem;
+}
+
+$color: teal;
+
+* {
+    color: $color
+}
