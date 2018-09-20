@@ -51,7 +51,7 @@ const store = ExpenseStore;
 // store.dispatch(sortByAmount());
 
 autorun(() => {
-    console.log('store', store.filteredExpenses);
+    console.log('store', store.filteredExpenses, store.filters.startDate);
 });
 
 store.createExpense({

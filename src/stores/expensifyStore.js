@@ -20,7 +20,7 @@ class ExpenseStore {
 
     @observable filters = {
         text: '',
-        sortBy: 'amount',
+        sortBy: 'date',
         startDate: null,
         endDate: null
     };
@@ -65,7 +65,7 @@ class ExpenseStore {
     findExpenseById(id) {
         return this.expenses.find((expense) => expense.id == id);
     }
-    
+
     @action setTextFilter(text) {
         this.filters.text = text;
     }
