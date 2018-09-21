@@ -1,12 +1,12 @@
-import { observable, action, computed, autorun } from 'mobx';
-
+import { observable, action, computed } from 'mobx';
+import database from '../firebase/firebase';
 class Expense {
     @observable note;
     @observable description;
     @observable createdAt;
     @observable amount;
 
-    constructor({note, description, amount, createdAt, id}) {
+    constructor({ note, description, amount, createdAt, id }) {
         // this.id = Math.floor(Math.random() * Date.now());
         this.id = id;
         this.createdAt = createdAt || Date.now();
@@ -37,7 +37,7 @@ class ExpenseStore {
             const text = matchPattern.test(expense.note);
 
             return startDate && endDate && text;
-        }).sort((a,b) => {
+        }).sort((a, b) => {
             if (this.filters.sortBy === 'date')
                 return a.createdAt < b.createdAt ? 1 : -1;
             else
@@ -45,22 +45,36 @@ class ExpenseStore {
         });
     }
 
-    @action createExpense(newExpense) {
+    @action populateExpense(newExpense) {
         this.expenses.push(new Expense(newExpense));
     }
 
-    @action editExpense(id, updatedExpense) {
-        this.expenses.find((expense, i) => {
-            if(expense.id === id)
-                this.expenses[i] = {
-                    ...this.expenses[i],
-                    ...updatedExpense
-                };
+    @action createExpense(newExpense) {
+        return database().ref('expenses').push(newExpense).then(postedExpense => {
+            newExpense.id = postedExpense.key;
+            this.expenses.push(new Expense(newExpense));
         });
     }
 
+    @action editExpense(id, updatedExpense) {
+        return database().ref('expenses').update({
+            [id]: updatedExpense
+        }).then(() => {
+            this.expenses.find((expense, i) => {
+                if (expense.id === id)
+                    this.expenses[i] = {
+                        ...this.expenses[i],
+                        ...updatedExpense
+                    };
+            });
+        });
+
+    }
+
     @action removeExpense(id) {
-        this.expenses = this.expenses.filter((expense) => expense.id !== id);
+        return database().ref(`expenses/${id}`).remove().then(() => {
+            this.expenses = this.expenses.filter((expense) => expense.id !== id);
+        });
     }
 
     findExpenseById(id) {

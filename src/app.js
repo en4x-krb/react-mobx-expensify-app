@@ -34,7 +34,7 @@ class App extends React.Component {
     UNSAFE_componentWillMount() {
         database().ref('expenses').once('value').then((snapshot) => {
             snapshot.forEach((childSnapshot) => {
-                store.createExpense({
+                store.populateExpense({
                     id: childSnapshot.key,
                     ...childSnapshot.val()
                 })

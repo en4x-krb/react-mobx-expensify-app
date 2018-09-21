@@ -12,8 +12,11 @@ class EditExpense extends React.Component {
     }
 
     onRemove(id) {
-        database().ref(`expenses/${id}`).remove().then(() => {
-            this.props.store.removeExpense(id);
+        // database().ref(`expenses/${id}`).remove().then(() => {
+        //     this.props.store.removeExpense(id);
+        //     this.props.history.push('/');
+        // });
+        this.props.store.removeExpense(id).then(() => {
             this.props.history.push('/');
         });
     }
@@ -26,10 +29,14 @@ class EditExpense extends React.Component {
                 <AddExpenseForm
                     expense={expense}
                     onSubmit={(updatedExpense) => {
-                        database().ref(`expenses`).update({
-                            [expense.id]: updatedExpense
-                        }).then(() => {
-                            this.props.store.editExpense(expense.id, updatedExpense);
+                        // database().ref(`expenses`).update({
+                        //     [expense.id]: updatedExpense
+                        // }).then(() => {
+                        //     this.props.store.editExpense(expense.id, updatedExpense);
+                        //     this.props.history.push('/');
+                        // });
+
+                        this.props.store.editExpense(expense.id, updatedExpense).then(() => {
                             this.props.history.push('/');
                         });
                     }}
