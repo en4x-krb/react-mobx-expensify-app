@@ -6,8 +6,9 @@ class Expense {
     @observable createdAt;
     @observable amount;
 
-    constructor({note, description, amount, createdAt}) {
-        this.id = Date.now();
+    constructor({note, description, amount, createdAt, id}) {
+        // this.id = Math.floor(Math.random() * Date.now());
+        this.id = id;
         this.createdAt = createdAt || Date.now();
         this.note = note;
         this.description = description;

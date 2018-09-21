@@ -4,11 +4,16 @@ html {
 
 body {
     font: Helvetica, Arial, sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 $color: teal;
+$link: #000;
 
 * {
     color: $color
+}
+
+a {
+    color: $link
 }

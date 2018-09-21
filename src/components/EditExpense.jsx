@@ -1,9 +1,10 @@
 import React from 'react';
-import {inject} from 'mobx-react';
+import { inject } from 'mobx-react';
 // import { connect } from 'react-redux';
 // import { editExpense, removeExpense } from '../actions/expenses';
 
 import AddExpenseForm from './AddExpenseForm.jsx';
+import database from '../firebase/firebase';
 
 @inject("store")
 class EditExpense extends React.Component {
@@ -13,23 +14,29 @@ class EditExpense extends React.Component {
     }
 
     onRemove(id) {
-        this.props.store.removeExpense(id);
-        this.props.history.push('/');
+        database().ref(`expenses/${id}`).remove().then(() => {
+            this.props.store.removeExpense(id);
+            this.props.history.push('/');
+        });
     }
 
     render() {
         let expense = this.props.store.findExpenseById(this.props.match.params.id);
         return (
             <div>
-                <div>
-                    <h1>Edit Expenses</h1>
-                    <AddExpenseForm expense={expense} onSubmit={(updatedExpense) => {
-                        console.log(updatedExpense);
-                        this.props.store.editExpense(expense.id, updatedExpense);
-                        this.props.history.push('/');
-                    }} />
-                    <button onClick={this.onRemove.bind(this, expense.id)}>Remove Expense</button>
-                </div>
+                <h1>Edit Expenses</h1>
+                <AddExpenseForm
+                    expense={expense}
+                    onSubmit={(updatedExpense) => {
+                        database().ref(`expenses`).update({
+                            [expense.id]: updatedExpense
+                        }).then(() => {
+                            this.props.store.editExpense(expense.id, updatedExpense);
+                            this.props.history.push('/');
+                        });
+                    }}
+                />
+                <button onClick={this.onRemove.bind(this, expense.id)}>Remove Expense</button>
             </div>
         )
     }

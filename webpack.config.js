@@ -1,11 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const CSSExtract = new MiniCssExtractPlugin({ filename: 'styles.css' }); 
-
-
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const cssExtract = new ExtractTextPlugin('style.css');
+const CSSExtract = new MiniCssExtractPlugin({ filename: 'styles.css' });
 
 module.exports = (env) => {
     const isProduction = env === 'production';
@@ -13,7 +9,7 @@ module.exports = (env) => {
         mode: 'development',
         entry: './src/app.js',
         output: {
-            path: path.resolve(__dirname, "public", "scripts"),
+            path: path.resolve(__dirname, "public", "assets"),
             filename: "bundle.js"
         },
         module: {
@@ -36,26 +32,13 @@ module.exports = (env) => {
                             }
                         }
                     ]
-                    // use: cssExtract.extract({
-                    //     fallback: 'style-loader',
-                    //     use: [
-                    //         'css-loader',
-                    //         'sass-loader'
-                    //     ]
-                    // })
-                    // use: [
-                    //     "style-loader",
-                    //     "css-loader",
-                    //     "sass-loader"
-                    // ]
                 }
             ]
         },
         plugins: [CSSExtract],
         devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
         devServer: {
-            contentBase: './public',
-            publicPath: '/scripts/',
+            contentBase: [path.join(__dirname, 'public'), path.join(__dirname, 'public', 'assets')],
             historyApiFallback: true
         }
     }
