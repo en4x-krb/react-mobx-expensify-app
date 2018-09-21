@@ -1,7 +1,5 @@
 import React from 'react';
 import { inject } from 'mobx-react';
-// import { connect } from 'react-redux';
-// import { editExpense, removeExpense } from '../actions/expenses';
 
 import AddExpenseForm from './AddExpenseForm.jsx';
 import database from '../firebase/firebase';
@@ -42,9 +40,4 @@ class EditExpense extends React.Component {
     }
 };
 
-// const mapStateToProps = (state, props) => ({
-//     expense: state.expenses.find(expense => expense.id == props.match.params.id)
-// });
-
-// export default connect(mapStateToProps)(EditExpense);
 export default EditExpense;

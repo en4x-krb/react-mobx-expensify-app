@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Provider} from 'mobx-react';
-import {autorun} from 'mobx';
+import { Provider } from 'mobx-react';
+import { autorun } from 'mobx';
 
 import database from './firebase/firebase';
 
@@ -17,7 +17,19 @@ autorun(() => {
     console.log('store', store.filteredExpenses);
 });
 
-class App extends React.Component{
+database().ref('expenses').on('child_removed', (removedExpense) => {
+    console.log(removedExpense);
+});
+
+database().ref('expenses').on('child_changed', (changedExpense) => {
+    console.log(changedExpense);
+});
+
+database().ref('expenses').on('child_added', (addedExpense) => {
+    console.log(addedExpense);
+});
+
+class App extends React.Component {
 
     UNSAFE_componentWillMount() {
         database().ref('expenses').once('value').then((snapshot) => {
@@ -39,4 +51,4 @@ class App extends React.Component{
     }
 };
 
-ReactDOM.render(<App/>, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
